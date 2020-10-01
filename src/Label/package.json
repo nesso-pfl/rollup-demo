@@ -1,0 +1,12 @@
+{
+  "name": "rollup-demo__label",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "nesso <32949286+nesso-pfl@users.noreply.github.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.2.0"
+  }
+}
