@@ -10,7 +10,9 @@ import typescript from "@rollup/plugin-typescript";
  * ex) Button の場合、 src/Button/index.tsx を input とする
  **/
 export default (commandLineArgs) => {
-  const input = detectInput(commandLineArgs.input || "");
+  const { input, rootDir, tsconfigPath } = detectFromInput(
+    commandLineArgs.input || ""
+  );
   // this will make Rollup ignore the CLI argument
   delete commandLineArgs.input;
 
@@ -30,8 +32,9 @@ export default (commandLineArgs) => {
       resolve(),
       typescript({
         declaration: true,
-        declarationDir: "build/",
-        rootDir: "src/",
+        declarationDir: "build",
+        rootDir: rootDir,
+        tsconfig: tsconfigPath,
       }),
       terser(),
       filesize(),
@@ -40,13 +43,17 @@ export default (commandLineArgs) => {
   };
 };
 
-const detectInput = (inputOption) => {
+const detectFromInput = (inputOption) => {
   switch (inputOption) {
     case "all":
-      return "src/index.ts";
+      return { input: "src/index.ts", rootDir: "src", tsconfigPath: undefined };
     case "":
-      return "src/index.ts";
+      return { input: "src/index.ts", rootDir: "src", tsconfigPath: undefined };
     default:
-      return `src/${inputOption}/index.tsx`;
+      return {
+        input: `src/${inputOption}/index.tsx`,
+        rootDir: undefined,
+        tsconfigPath: `src/${inputOption}/tsconfig.json`,
+      };
   }
 };
